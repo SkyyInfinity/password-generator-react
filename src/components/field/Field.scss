@@ -1,0 +1,43 @@
+.password-field {
+    padding: 16px 18px;
+    background-color: var(--c-secondary);
+    display: flex;
+    gap: 8px;
+    width: 100%;
+
+    input {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        font-size: 22px;
+        font-family: inherit;
+        font-weight: bold;
+        color: var(--c-text);
+        transition: var(--a-transition);
+
+        &::placeholder {
+            color: var(--c-placeholder);
+        }
+    }
+    button {
+        background-color: transparent;
+        outline: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        font-size: 22px;
+        color: var(--c-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: var(--a-transition);
+
+        &:hover {
+            color: var(--c-white);
+        }
+    }
+}
