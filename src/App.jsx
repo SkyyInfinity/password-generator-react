@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Field from './components/field/Field';
 import Tweaks from './components/tweaks/Tweaks';
+import Toastinette from './assets/plugins/toastinette.js';
+import './assets/plugins/toastinette.min.css';
 
 const App = () => {
     const MAX       = 20;
@@ -12,10 +14,27 @@ const App = () => {
     const [length, setLength] = useState(10);
     const [selected, setSelected] = useState('');
     const [password, setPassword] = useState('');
+    const [strength, setStrength] = useState(0);
 
     const handleLengthSlider = e => {
         setLength(e.target.value);
     }
+
+    const increaseStrength = (data) => {
+        let bars = document.querySelectorAll('.bar');
+
+        for(let i = 0; i < data; i++) {
+            bars[i].classList.add('bar__active');
+        }
+    };
+    const decreaseStrength = (data) => {
+        let bars = document.querySelectorAll('.bar');
+
+        for(let i = data; i >= data; i--) {
+            bars[i].classList.remove('bar__active');
+        }
+    };
+
     const toggleUppercase = e => {
         if(e.target.checked) {
             setSelected(prev => {
@@ -24,6 +43,13 @@ const App = () => {
                 
                 return string;
             });
+            setStrength(prev => {
+                let result = prev + 1;
+
+                increaseStrength(result);
+
+                return result;
+            });
         } else {
             setSelected(prev => {
                 let string = '';
@@ -31,6 +57,13 @@ const App = () => {
                 string = prev.replace(UPPERCASE, '');
 
                 return string;
+            });
+            setStrength(prev => {
+                let result = prev - 1;
+
+                decreaseStrength(result);
+
+                return result;
             });
         }
     }
@@ -42,6 +75,13 @@ const App = () => {
                 
                 return string;
             });
+            setStrength(prev => {
+                let result = prev + 1;
+
+                increaseStrength(result);
+
+                return result;
+            });
         } else {
             setSelected(prev => {
                 let string = '';
@@ -49,6 +89,13 @@ const App = () => {
                 string = prev.replace(LOWERCASE, '');
 
                 return string;
+            });
+            setStrength(prev => {
+                let result = prev - 1;
+
+                decreaseStrength(result);
+
+                return result;
             });
         }
     }
@@ -60,6 +107,13 @@ const App = () => {
                 
                 return string;
             });
+            setStrength(prev => {
+                let result = prev + 1;
+
+                increaseStrength(result);
+
+                return result;
+            });
         } else {
             setSelected(prev => {
                 let string = '';
@@ -67,6 +121,13 @@ const App = () => {
                 string = prev.replace(NUMBERS, '');
 
                 return string;
+            });
+            setStrength(prev => {
+                let result = prev - 1;
+
+                decreaseStrength(result);
+
+                return result;
             });
         }
     }
@@ -78,6 +139,13 @@ const App = () => {
                 
                 return string;
             });
+            setStrength(prev => {
+                let result = prev + 1;
+
+                increaseStrength(result);
+
+                return result;
+            });
         } else {
             setSelected(prev => {
                 let string = '';
@@ -86,19 +154,40 @@ const App = () => {
 
                 return string;
             });
+            setStrength(prev => {
+                let result = prev - 1;
+
+                decreaseStrength(result);
+
+                return result;
+            });
         }
     }
     const generatePassword = () => {
-        setPassword(prev => {
-            let result           = '';
-            let charactersLength = selected.length;
+        if(selected.length !== 0) {
+            setPassword(prev => {
+                
+                    let result = '';
+                    let charactersLength = selected.length;
+                    let trueChars = selected.split("").sort(function(a, b) { return (Math.random() < 0.5 ? 1 : -1); }).join("");
 
-            for ( let i = 0; i < length; i++ ) {
-                result += selected.charAt(Math.floor(Math.random() * charactersLength));
-            }
-            
-            return result;
-        });
+                    for ( let i = 0; i < length; i++ ) {
+                        result += trueChars.charAt(Math.floor(Math.random() * charactersLength));
+                    }
+                    
+                    return result;
+            });
+        } else {
+            // Error message
+            Toastinette.init({
+                position: 'top-center',
+                title: 'Oops!',
+                message: 'Can\'t generate password with empty characters.',
+                type: 'error',
+                autoClose: 4000,
+                progress: true
+            });
+        }
     }
 
     return (
@@ -110,6 +199,7 @@ const App = () => {
             <Tweaks 
                 max={ MAX }
                 length={ length }
+                strength={ strength } 
                 handleLengthSlider={ handleLengthSlider }
                 toggleUppercase={ toggleUppercase }
                 toggleLowercase={ toggleLowercase }
@@ -117,6 +207,7 @@ const App = () => {
                 toggleNumbers={ toggleNumbers }
                 toggleSymbols={ toggleSymbols }
                 password={ password }
+
             />
         </div>
     )

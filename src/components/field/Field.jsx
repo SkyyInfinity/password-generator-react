@@ -1,13 +1,31 @@
 import React from "react";
 import './Field.scss';
+import Toastinette from '../../assets/plugins/toastinette.js';
+import '../../assets/plugins/toastinette.min.css';
 
 const Field = (props) => {
     const copyPassword = () => {
         if(props.password != '') {
             navigator.clipboard.writeText(props.password);
-            // TODO Show notice "Copied!"
+            // Success message
+            Toastinette.init({
+                position: 'top-center',
+                title: 'Great!',
+                message: 'The password has been copied successfully.',
+                type: 'success',
+                autoClose: 4000,
+                progress: true
+            });
         } else {
-            alert('Please generate password before copy!');
+            // Error message
+            Toastinette.init({
+                position: 'top-center',
+                title: 'Oops!',
+                message: 'Please generate password before copy.',
+                type: 'error',
+                autoClose: 4000,
+                progress: true
+            });
         }   
     }
 

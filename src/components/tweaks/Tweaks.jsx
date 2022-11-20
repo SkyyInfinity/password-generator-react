@@ -1,9 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import './Tweaks.scss';
 
 const Tweaks = (props) => {
 
-    //TODO Increase strength depend of checkbox
+    useEffect(() => {
+        const BARS = document.querySelectorAll('.bar');
+
+        BARS.forEach(bar => {
+            if(bar.classList.contains('bar__active')) {
+                if(props.strength > 3) {
+                    // strong
+                    bar.style.backgroundColor = "var(--c-primary)";
+                } else if(props.strength >= 2) {
+                    // medium
+                    bar.style.backgroundColor = "orange";
+                } else if(props.strength === 1) {
+                    // weak
+                    bar.style.backgroundColor = "crimson";
+                } else {
+                    // nothing
+                    bar.style.backgroundColor = "transparent";
+                }
+            } else {
+                bar.style.backgroundColor = "transparent";
+            }
+        });
+        
+    }, [props.strength]);
     
     return (
         <div className="tweaks">
@@ -44,11 +67,13 @@ const Tweaks = (props) => {
             <div className="tweaks-strength">
                 <label>Strength</label>
                 <div className="bars">
-                    <span className="label">Medium</span>
-                    <div className="bar bar__active"></div>
-                    <div className="bar bar__active"></div>
-                    <div className="bar"></div>
-                    <div className="bar"></div>
+                    <span className="label">
+                        {  props.strength > 3 ? 'Strong' : props.strength >= 2 ? 'Medium' : 'Weak' }
+                    </span>
+                    <div className='bar'></div>
+                    <div className='bar'></div>
+                    <div className='bar'></div>
+                    <div className='bar'></div>
                 </div>
             </div>
             <button 

@@ -147,6 +147,7 @@
                 height: 22px;
                 width: 8px;
                 border: 1px solid var(--c-text);
+                background-color: none !important;
 
                 &__active {
                     background-color: var(--c-primary);
